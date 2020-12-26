@@ -12,8 +12,5 @@ public class ToposerviceApplication {
         SpringApplication.run(ToposerviceApplication.class, args);
     }
 
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
+
 }

@@ -3,40 +3,54 @@ package jh.mastercloud.toposervice.service;
 import jh.mastercloud.toposervice.CityNotFoundException;
 import jh.mastercloud.toposervice.dto.TopographicDetailsDto;
 import jh.mastercloud.toposervice.model.Landscape;
-import jh.mastercloud.toposervice.model.TopographicInfo;
-import jh.mastercloud.toposervice.repository.TopographicInfoRepository;
+import jh.mastercloud.toposervice.model.City;
+import jh.mastercloud.toposervice.repository.CityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
+import java.util.Random;
 
 @Service
 @Slf4j
 public class TopographicService {
     private static final String MADRID = "Madrid";
-    private static final String GRANADA = "Granada";
-    private static final String VALLADOLID = "Valladolid";
-    private final TopographicInfoRepository repo;
-    private final ModelMapper mapper;
+    private static final String PARIS = "Paris";
+    private static final String LONDON = "London";
+    private static final String ROME = "Rome";
+    private final CityRepository repo;
 
-    public TopographicService(TopographicInfoRepository repo, ModelMapper mapper) {
+    public TopographicService(CityRepository repo) {
         this.repo = repo;
-        this.mapper = mapper;
     }
 
     @PostConstruct
-    public void initDataBase(){
+    public void initDataBase() throws InterruptedException {
+        log.info("======> Deleting MongoDB database <========");
+        this.repo.deleteAll().block();
+
         log.info("======> Initializing MongoDB database <========");
-        this.repo.deleteAll();
-        this.repo.saveAll(Arrays.asList(TopographicInfo.builder().id(MADRID).landscape(Landscape.FLAT.getLabel()).build(),
-                TopographicInfo.builder().id(GRANADA).landscape(Landscape.MOUNTAIN.getLabel()).build(),
-                TopographicInfo.builder().id(VALLADOLID).landscape(Landscape.FLAT.getLabel()).build()));
+        this.repo.save(City.builder().name(MADRID).landscape(Landscape.FLAT).build()).block();
+        this.repo.save(City.builder().name(PARIS).landscape(Landscape.MOUNTAIN).build()).block();
+        this.repo.save(City.builder().name(ROME).landscape(Landscape.MOUNTAIN).build()).block();
+        this.repo.save(City.builder().name(LONDON).landscape(Landscape.FLAT).build()).block();
+
     }
 
-    public TopographicDetailsDto getTopographicDetails(String city) {
+    public Mono<TopographicDetailsDto> getTopographicDetails(String city) throws InterruptedException {
         log.info("Getting topographic details for city: {}", city);
-        return mapper.map(this.repo.findById(city).orElseThrow(CityNotFoundException::new), TopographicDetailsDto.class);
+
+        return this.repo.findByNameIgnoreCase(city)
+                .map(city1 -> TopographicDetailsDto.builder()
+                        .id(city1.getName())
+                        .landscape(city1.getLandscape().toString())
+                        .build())
+                .switchIfEmpty(Mono.error(new CityNotFoundException()));
+    }
+
+    private int generateRandomNumberBetween(int min, int max){
+        return new Random().ints(min,max).findFirst().getAsInt();
     }
 }

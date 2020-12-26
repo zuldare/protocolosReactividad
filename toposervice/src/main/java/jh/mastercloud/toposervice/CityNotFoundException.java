@@ -8,4 +8,8 @@ public class CityNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 965494398556263050L;
 
+    public CityNotFoundException(){
+        super("City not found");
+    }
+
 }

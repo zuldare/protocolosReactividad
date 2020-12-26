@@ -1,24 +1,10 @@
 package jh.mastercloud.toposervice.model;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public enum Landscape {
-    FLAT("flat"), MOUNTAIN("mountain");
+    FLAT, MOUNTAIN;
 
-    private final String label;
-
-    Landscape(String label) {
-        this.label = label;
-    }
-
-    public static Optional<Landscape> valueOfLabel(String label){
-        return Arrays.stream(Landscape.values())
-                .filter(landscape -> landscape.label.equals(label))
-                .findFirst();
-    }
-
-    public String getLabel() {
-        return this.label;
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 }
