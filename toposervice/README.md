@@ -27,7 +27,7 @@ This call will retrieve
 
 | Status | Info                           | Response  |
 | ------ | -----------------------------  | --------- |
-| 400    | City not found                 | `json`                                            |
+| 404    | City not found                 | `json`                                            |
 |        |                                | ` {`                                              |
 |        |                                | ` "timestamp": "2020-12-26T15:40:41.008+00:00",`  |
 |        |                                | ` "path": "/api/topographicdetails/Peru",`        |
