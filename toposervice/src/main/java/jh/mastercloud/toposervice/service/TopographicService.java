@@ -2,15 +2,15 @@ package jh.mastercloud.toposervice.service;
 
 import jh.mastercloud.toposervice.CityNotFoundException;
 import jh.mastercloud.toposervice.dto.TopographicDetailsDto;
-import jh.mastercloud.toposervice.model.Landscape;
 import jh.mastercloud.toposervice.model.City;
+import jh.mastercloud.toposervice.model.Landscape;
 import jh.mastercloud.toposervice.repository.CityRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
+import java.time.Duration;
 import java.util.Random;
 
 @Service
@@ -27,7 +27,7 @@ public class TopographicService {
     }
 
     @PostConstruct
-    public void initDataBase() throws InterruptedException {
+    public void initDataBase() {
         log.info("======> Deleting MongoDB database <========");
         this.repo.deleteAll().block();
 
@@ -39,15 +39,17 @@ public class TopographicService {
 
     }
 
-    public Mono<TopographicDetailsDto> getTopographicDetails(String city) throws InterruptedException {
+    public Mono<TopographicDetailsDto> getTopographicDetails(String city)  {
         log.info("Getting topographic details for city: {}", city);
 
         return this.repo.findByNameIgnoreCase(city)
+                .delayElement(Duration.ofSeconds(this.generateRandomNumberBetween(1,4)))
                 .map(city1 -> TopographicDetailsDto.builder()
                         .id(city1.getName())
                         .landscape(city1.getLandscape().toString())
                         .build())
                 .switchIfEmpty(Mono.error(new CityNotFoundException()));
+
     }
 
     private int generateRandomNumberBetween(int min, int max){
