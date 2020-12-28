@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 const {Sequelize, Model, DataTypes} = require("sequelize");
-const plantModel = require('../models/plant.js');
+const plantModel = require('../models/plantModel.js');
+const plantRoute = require('../routes/plantRoute.js')
 let conn;
 
 async function initialize(app){
@@ -24,7 +25,10 @@ async function initialize(app){
 
         // Sequelize > models
         console.log("=> Initialize models and export them");
-        plantModel(sequelize, Model, DataTypes);
+        let plant = await plantModel(sequelize, Model, DataTypes);
+
+        // Plant routes
+        plantRoute(app, plant);
 
         // Synchro model with ddbb
         console.log("Synchronize models with database");
@@ -35,5 +39,10 @@ async function initialize(app){
 
 }
 
-module.exports.initialize = initialize;
+async function disconnect(){
+    await conn.close();
+    console.log("====> Database connection closed")
+}
+
+module.exports = {initialize, disconnect}
 

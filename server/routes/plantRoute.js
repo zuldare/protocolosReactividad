@@ -1,23 +1,26 @@
-module.exports = (app, Plant) => {
+module.exports = (app, plant) => {
+    const INTERNAL_ERROR = "An internal error has occurred";
 
-    // GET ALL
-    app.get("/api/eoloplants/", async (req, res) => {
-        console.log("Getting all eolic plants")
-        let plants = await Plant.findAll();
-        return res.json(plants);
+    app.post("/api/eoloplants/", async(req, res) => {
+        console.log("Creating a new plant");
+        try {
+            let newPlant = await plant.create({ city: req.body.city });
+            console.log(newPlant);
+            res.status(201).json(newPlant);
+        } catch (e) {
+            console.error(e);
+            res.status(500).send(INTERNAL_ERROR + e );
+        }
     });
 
-    // CREATE A PLANT
-    app.post("/api/eoloplants/", async (req, res) => {
-       console.log("Creating a new plant");
-
-       let newPlant = await Plant.create({ city: req.body.city });
-       res.json({
-           id: newPlant.id,
-           city: newPlant.city,
-           progress: newPlant.progress,
-           completed: newPlant.completed,
-           planning:  newPlant.planning
-       })
+    app.get("/api/eoloplants/", async(req, res) => {
+        console.log("Getting all ");
+        try {
+            let plants = await plant.findAll();
+            res.status(200).json(plants);
+        } catch (e) {
+            console.error(e);
+            res.status(500).send(INTERNAL_ERROR + e);
+        }
     });
 }

@@ -12,6 +12,12 @@ async function main (){
         console.log('Server listening on port 3000!');
     });
 
+    process.on('SIGINT', () => {
+        db.disconnect();
+        console.log('Process terminated');
+        process.exit(0);
+    })
+
 }
 
 

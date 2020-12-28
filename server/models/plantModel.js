@@ -2,7 +2,7 @@ module.exports = (sequelize, Model, DataTypes) => {
 
     class Plant extends Model {};
 
-    Plant.init({
+    return Plant.init({
         id:{
             primaryKey: true,
             type: DataTypes.INTEGER,
@@ -15,15 +15,16 @@ module.exports = (sequelize, Model, DataTypes) => {
         progress:{
             type: DataTypes.INTEGER,
             allowNull: false,
-            default: 0
+            defaultValue: 0
         },
         completed:{
             type: DataTypes.BOOLEAN,
             allowNull: false,
-            default: false
+            defaultValue: false
         },
         planning:{
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: true
         }
     },  { sequelize, modelName: 'plant' })
 }
