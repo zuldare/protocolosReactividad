@@ -1,1 +1,6 @@
 /server/node_modules/
+/.idea/aws.xml
+/.idea/modules.xml
+/.idea/protocolosReactividad.iml
+/.idea/vcs.xml
+/.idea/workspace.xml
