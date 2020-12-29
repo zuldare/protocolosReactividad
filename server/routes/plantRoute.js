@@ -1,13 +1,23 @@
-module.exports = (app, plant) => {
+module.exports = (app, Plant) => {
     const INTERNAL_ERROR = "An internal error has occurred. ";
+    const ALREADY_EXISTS = "City already exists. "
 
     // CREATE
     app.post("/api/eoloplants/", async(req, res) => {
         console.log("Creating a new plant");
         try {
-            let newPlant = await plant.create({ city: req.body.city });
-            console.log(newPlant);
-            res.status(201).json(newPlant);
+            let rows = await Plant.findAll({where: {city: req.body.city}});
+
+            if (rows.length === 0){
+                let newPlant = await Plant.create({ city: req.body.city });
+                console.log(newPlant);
+                res.status(201).json(newPlant);
+            } else {
+                console.error(req.body.city + ALREADY_EXISTS);
+                res.status(400).send(ALREADY_EXISTS);
+            }
+
+
         } catch (e) {
             console.error(e);
             res.status(500).send(INTERNAL_ERROR + e );
@@ -18,7 +28,7 @@ module.exports = (app, plant) => {
     app.get("/api/eoloplants/", async(req, res) => {
         console.log("Getting all plants");
         try {
-            let plants = await plant.findAll();
+            let plants = await Plant.findAll();
             res.status(200).json(plants);
         } catch (e) {
             console.error(e);
@@ -30,12 +40,15 @@ module.exports = (app, plant) => {
     app.delete("/api/eoloplants/:city", async(req, res) => {
         try {
             console.log("Deleting eolic plant from city: " + req.params.city);
-            let plantDeleted = await plant.destroy({where: {city: req.params.city}});
+            let plantDeleted = await Plant.destroy({where: {city: req.params.city}});
             res.status(200).json(plantDeleted);
         } catch (e) {
             console.error(e);
             res.status(500).send(INTERNAL_ERROR +  e);
         }
     });
+
+
+
 
 }
