@@ -1,4 +1,4 @@
-module.exports = (app, Plant) => {
+module.exports = (app, Plant, queue) => {
     const INTERNAL_ERROR = "An internal error has occurred. ";
     const ALREADY_EXISTS = "City already exists. "
 
@@ -11,13 +11,16 @@ module.exports = (app, Plant) => {
             if (rows.length === 0){
                 let newPlant = await Plant.create({ city: req.body.city });
                 console.log(newPlant);
+                // set response
                 res.status(201).json(newPlant);
+
+                // Send message to queue
+                queue.sendMessage(JSON.stringify({id: newPlant.id, city: newPlant.city}))
+
             } else {
                 console.error(req.body.city + ALREADY_EXISTS);
                 res.status(400).send(ALREADY_EXISTS);
             }
-
-
         } catch (e) {
             console.error(e);
             res.status(500).send(INTERNAL_ERROR + e );

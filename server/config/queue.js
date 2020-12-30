@@ -1,7 +1,7 @@
 const amqp = require('amqplib/callback_api');
 const CONN_URL = 'amqp://guest:guest@localhost';
-const plantCreationQueue = 'eoloplantCreationRequestQueue';
-const notificationQueue = 'eoloplantCreationProgressNotificationQueue';
+const plantCreationQueue = 'eoloplantCreationRequests';
+const notificationQueue = 'eoloplantCreationProgressNotifications';
 
 let createPlantChannel = null;
 let notificationChannel = null;

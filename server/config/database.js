@@ -1,7 +1,8 @@
 const mysql = require('mysql2/promise');
 const {Sequelize, Model, DataTypes} = require("sequelize");
 const plantModel = require('../models/plantModel.js');
-const plantRoute = require('../routes/plantRoute.js')
+const plantRoute = require('../routes/plantRoute.js');
+const queue = require('./queue.js');
 let conn;
 
 async function initialize(app){
@@ -28,7 +29,7 @@ async function initialize(app){
         let plant = await plantModel(sequelize, Model, DataTypes);
 
         // Plant routes
-        plantRoute(app, plant);
+        plantRoute(app, plant, queue);
 
         // Synchro model with ddbb
         console.log("Synchronize models with database");
