@@ -1,13 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const db = require('./config/database.js');
 
-app.use(bodyParser.json());
+const expressWs = require('express-ws')(app);
+
+const db = require('./config/database.js');
+const queue = require('./config/queue');
 
 async function main (){
+    // Init express-websocket
+    let wss = expressWs.getWss('/notifications');
+
+    // Init database
     await db.initialize(app);
 
+    // Init queue
+    queue.initialize(wss);
+
+
+    app.use(bodyParser.json());
+
+    // Init server
     app.listen(3000, () => {
         console.log('Server listening on port 3000!');
     });
