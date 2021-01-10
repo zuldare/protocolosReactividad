@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node src/interface.js",
-    "dev": "nodemon src/interface.js",
+    "start": "node src/server",
+    "dev": "nodemon src/server",
     "client": "nodemon src/client"
   },
   "author": "",

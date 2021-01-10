@@ -51,6 +51,11 @@ message Weather {
 }
 ```
 
+# Usage
+```  
+$ npm install
+$ npm start
+```
 
 
 ### Author
