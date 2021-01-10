@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+
 app.use(bodyParser.json());
 const expressWs = require('express-ws')(app);
 
 const db = require('./config/database.js');
-const queue = require('./config/queue');
+const queue = require('./config/queue.js');
+const socket = require('./config/socket.js')
 
 async function main (){
     // Init express-websocket
@@ -13,6 +15,9 @@ async function main (){
 
      // Init queue
     await queue.initialize(wss);
+
+    // Init sockets
+    await socket.initialize(app);
 
     // Init database
     await db.initialize(app);

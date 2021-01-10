@@ -45,4 +45,4 @@ This call will retrieve
 
 ### Author
 
-Jaime Hernández Ortiz [github](https://github.com/zuldare)
+Jose Jaime Hernández Ortiz [github](https://github.com/zuldare)

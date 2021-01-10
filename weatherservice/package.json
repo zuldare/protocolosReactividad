@@ -1,0 +1,19 @@
+{
+  "name": "weatherservice",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node src/interface.js",
+    "dev": "nodemon src/interface.js",
+    "client": "nodemon src/client"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.5",
+    "grpc": "^1.24.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

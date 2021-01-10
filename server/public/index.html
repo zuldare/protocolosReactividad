@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="client.js"></script>
+    <title>EoloPlant Creator</title>
+</head>
+
+<body>
+
+<section>
+    <h2>Available cities to create plant are:</h2>
+    <ul id="availableCities"></ul>
+</section>
+
+<section>
+    <h2>Already created plants are:</h2>
+    <ul id="plants"></ul>
+</section>
+
+<section>
+    <h1>Create new plant</h1>
+    <input type="text" id="city" placeholder="Insert city name..." />
+    <button id="creationButton" onclick="createPlant()">CREATE</button>
+    <div id="progressText"></div>
+</section>
+
+
+</body>
+</html>
