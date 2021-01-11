@@ -2,9 +2,10 @@
   "name": "EolicPlantsService",
   "version": "1.0.0",
   "description": "Service that manages CRUD of eolic plants",
-  "main": "app.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "author": "Jaime Hernandez Ortiz",
   "license": "ISC",
