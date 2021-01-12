@@ -1,4 +1,4 @@
-package jh.mastercloud.planner;
+package jh.mastercloud.planner.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
